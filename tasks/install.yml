@@ -1,0 +1,12 @@
+---
+# tasks file for filebeat
+# created by qidian
+tasks:
+  - name: install | Check if filebeat link is already exsit.
+  stat: path={{ filebeat_home_dir }}
+  connection: local
+  register: filebeat_islink_result
+
+  - name: install | Create software files path
+
+  when: not filebeat_islink_result.stat.islnk

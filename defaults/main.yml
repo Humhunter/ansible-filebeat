@@ -1,0 +1,21 @@
+---
+# defaults file for filebeat
+
+software_files_path: "/apps/src/software"
+software_install_path: "/app"
+
+filebeat_version: "6.4.0"
+
+filebeat_file: "filebeat-{{ filebeat_version }}-linux-x86_64.tar.gz"
+filebeat_file_path: "{{ software_install_path }}/{{ filebeat_file }}"
+
+filebeat_home_dir: "/app/filebeat"
+filebeat_pid_dir: "{{ filebeat_home_dir }}/pid"
+filebeat_log_dir: "{{ filebeat_home_dir }}/logs"
+filebeat_conf_dir: "{{ filebeat_home_dir }}/conf"
+filebeat_conf_data: "{{ filebeat_home_dir }}/data"
+
+filebeat_service_name: "filebeat"
+filebeat_service_start: false
+filebeat_conf_file: "{{ filebeat_service_name }}.yml"
+filebeat_config : ""

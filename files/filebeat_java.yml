@@ -1,0 +1,31 @@
+filebeat.prospectors:
+
+- input_type: log
+  paths:
+    - /app/logs/*/*.app.log
+  fields:
+    log_topics: applog
+  scan_frequency: 5s
+  multiline.pattern: '^\|yjh-'
+  multiline.negate: true
+  multiline.match: after
+
+- input_type: log
+  paths:
+    - /app/logs/*/access.*.json.log
+  fields:
+    log_topics: access_jsonlog
+  scan_frequency: 5s
+  multiline.pattern: '^\|yjh-'
+  multiline.negate: true
+  multiline.match: after
+
+#----------------------------- KAFKA output --------------------------------
+output.kafka:
+  enable: true
+  hosts: ["192.168.77.136:9092","192.168.77.137:9092","192.168.77.138:9092"]
+  topic: '%{[fields][log_topics]}'
+
+processors:
+  - drop_fields:
+      fields: ["beat","host"]
