@@ -1,12 +1,16 @@
 ---
-# tasks file for filebeat
-# created by qidian
-tasks:
-  - name: install | Check if filebeat link is already exsit.
-  stat: path={{ filebeat_home_dir }}
+- name: install | Check if filebeat is already exsit.
+  stat: path={{ filebeat_install_dir }}
   connection: local
-  register: filebeat_islink_result
+  register: filebeat_isinstall_result
 
-  - name: install | Create software files path
+- name: install | ensure dictory app
+  file: path=/app/ state=directory
+  when: not filebeat_isinstall_result.stat.exists
 
-  when: not filebeat_islink_result.stat.islnk
+- name: install | copy tar
+  unarchive: src={{ filebeat_filename }} dest={{ software_installed_path }}
+  when: not filebeat_isinstall_result.stat.exists
+
+- name: install | link and chown
+  file: src={{ filebeat_install_dir }} path={{ filebeat_home_dir }} state=link

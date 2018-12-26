@@ -1,10 +1,4 @@
 ---
 # tasks file for filebeat
 # created by qidian
-  - hosts: all
-    remote_user: root
-    gather_facts: no
-
-
-    - include: install.yml
-    - include: config.yml
+- import_tasks: install.yml
