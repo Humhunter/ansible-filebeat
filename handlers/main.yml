@@ -1,2 +1,3 @@
 ---
-# handlers file for filebeat
+- name: reload filbeat
+  service: "name={{ filebeat_service_name }} state=restarted"

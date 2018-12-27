@@ -2,3 +2,4 @@
 # tasks file for filebeat
 # created by qidian
 - import_tasks: install.yml
+- import_tasks: config.yml

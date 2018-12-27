@@ -1,10 +1,22 @@
 ---
-# tasks file for filebeat
-# created by qidian
-  - hosts: all
-    remote_user: root
-    gather_facts: no
+- name: configure | create filebeat dir
+  file: path={{ item }} state=directory
+  with_items:
+   - "{{ filebeat_pid_dir }}"
+   - "{{ filebeat_log_dir }}"
+   - "{{ filebeat_conf_dir }}"
+   - "{{ filebeat_data_dir }}"
 
-    tasks:
-      - name:
-          include:
+- name: configure | copy conf
+  copy: src={{ filebeat_service_name }}.yml dest={{ filebeat_conf_dir }}
+  notify: reload filbeat
+  tags: reload_filebeat
+
+- name: configure | Setup filebeat init file.
+  template:
+    dest: "/etc/init.d/{{ filebeat_service_name }}"
+    mode: 0755
+    src: filebeat.init.j2
+
+- name: configure | Ensure filebeat is started and enabled on boot.
+  service: "name={{ filebeat_service_name }} state=started enabled=yes"

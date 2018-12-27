@@ -12,9 +12,8 @@ filebeat_home_dir: "/app/filebeat"
 filebeat_pid_dir: "{{ filebeat_home_dir }}/pid"
 filebeat_log_dir: "{{ filebeat_home_dir }}/logs"
 filebeat_conf_dir: "{{ filebeat_home_dir }}/conf"
-filebeat_conf_data: "{{ filebeat_home_dir }}/data"
+filebeat_data_dir: "{{ filebeat_home_dir }}/data"
 
 filebeat_service_name: "filebeat"
 filebeat_service_start: false
 filebeat_conf_file: "{{ filebeat_service_name }}.yml"
-filebeat_config : ""
