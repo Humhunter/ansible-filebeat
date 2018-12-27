@@ -1,38 +1,39 @@
-Role Name
+ansible-filebeat模块
 =========
 
-A brief description of the role goes here.
+自动化部署filbeat,并加入service模块,可以自动启停,支持动态升级,以及个性化配置文件
 
-Requirements
+Playbook的编写
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+filebeat.yml (一般放在playbooks目录)
 
-Role Variables
---------------
+```
+---
+  - hosts: all
+    remote_user: root
+    max_fail_percentage: 35 #有35%的服务器执行失败就终止play
+    serial: 2  # 两台主机两台主机都执行
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+    roles:
+         - {role: filebeat, filebeat_service_name: "filebeat"} #自定义可以再files文件夹中存放然后在此处定义变量即可
+```
 
-Dependencies
-------------
+## 执行指令
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+ansible-playbook -i hosts  filebeat.yaml
 
-Example Playbook
-----------------
+```
+playbook: filebeat.yaml
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+  play #1 (all): all	TAGS: []
+    tasks:
+      filebeat : install | Check if filebeat is already exsit.	TAGS: []
+      filebeat : install | ensure dictory app	TAGS: []
+      filebeat : install | copy tar	TAGS: []
+      filebeat : install | link and chown	TAGS: []
+      filebeat : configure | create filebeat dir	TAGS: []
+      filebeat : configure | copy conf	TAGS: [reload_filebeat]
+      filebeat : configure | Setup filebeat init file.	TAGS: []
+      filebeat : configure | Ensure filebeat is started and enabled on boot.	TAGS: []
+```
